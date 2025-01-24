@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="AWSPostgreSQL">
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+    </TestPlan>
+    <hashTree>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="AWSPostgres">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">awspostgresql</stringProp>
+        <stringProp name="dbUrl">jdbc:postgresql://<server-dns>:5432/postgres</stringProp>
+        <stringProp name="driver">org.postgresql.Driver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">postgres</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">postgres</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="TG_InitInsert_SelectUpdateInsert">
+        <stringProp name="TestPlan.comments">Initialization of Inserts into Tables for initial data bed</stringProp>
+        <boolProp name="ThreadGroup.delayedStart">true</boolProp>
+        <intProp name="ThreadGroup.num_threads">100</intProp>
+        <longProp name="ThreadGroup.duration">601</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop_Insert_Account_Credit">
+          <stringProp name="LoopController.loops">1000</stringProp>
+          <stringProp name="TestPlan.comments">Initial Inserts into Account and Credit card tables - 50 loops</stringProp>
+        </LoopController>
+        <hashTree>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="acc_id" enabled="true">
+            <stringProp name="CounterConfig.start">1</stringProp>
+            <stringProp name="CounterConfig.end">100000</stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">acc_id</stringProp>
+            <stringProp name="CounterConfig.format"></stringProp>
+            <boolProp name="CounterConfig.per_user">false</boolProp>
+            <stringProp name="TestPlan.comments">Number of threads * Loops</stringProp>
+          </CounterConfig>
+          <hashTree/>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="counter" enabled="true">
+            <stringProp name="CounterConfig.start">1</stringProp>
+            <stringProp name="CounterConfig.end">20000</stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">counter</stringProp>
+            <stringProp name="CounterConfig.format"></stringProp>
+            <boolProp name="CounterConfig.per_user">false</boolProp>
+            <stringProp name="TestPlan.comments">Ratio of duplicate data in db 1:5</stringProp>
+          </CounterConfig>
+          <hashTree/>
+          <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="ccnum" enabled="true">
+            <stringProp name="maximumValue">99999999</stringProp>
+            <stringProp name="minimumValue">1000000</stringProp>
+            <stringProp name="outputFormat"></stringProp>
+            <boolProp name="perThread">false</boolProp>
+            <stringProp name="randomSeed"></stringProp>
+            <stringProp name="variableName">ccnum</stringProp>
+          </RandomVariableConfig>
+          <hashTree/>
+          <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="cvc" enabled="true">
+            <stringProp name="variableName">cvc</stringProp>
+            <stringProp name="outputFormat"></stringProp>
+            <stringProp name="minimumValue">100</stringProp>
+            <stringProp name="maximumValue">999</stringProp>
+            <stringProp name="randomSeed"></stringProp>
+            <boolProp name="perThread">false</boolProp>
+          </RandomVariableConfig>
+          <hashTree/>
+          <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="zip" enabled="true">
+            <stringProp name="variableName">zip</stringProp>
+            <stringProp name="outputFormat"></stringProp>
+            <stringProp name="minimumValue">10000</stringProp>
+            <stringProp name="maximumValue">99999</stringProp>
+            <stringProp name="randomSeed"></stringProp>
+            <boolProp name="perThread">false</boolProp>
+          </RandomVariableConfig>
+          <hashTree/>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="lib_id" enabled="true">
+            <stringProp name="CounterConfig.start">1</stringProp>
+            <stringProp name="CounterConfig.end">100000</stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">lib_id</stringProp>
+            <stringProp name="CounterConfig.format"></stringProp>
+            <boolProp name="CounterConfig.per_user">false</boolProp>
+            <stringProp name="TestPlan.comments">Number of threads * Loops</stringProp>
+          </CounterConfig>
+          <hashTree/>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="reader_id" enabled="true">
+            <stringProp name="CounterConfig.start">1</stringProp>
+            <stringProp name="CounterConfig.end">1000001</stringProp>
+            <stringProp name="CounterConfig.incr">10</stringProp>
+            <stringProp name="CounterConfig.name">reader_id</stringProp>
+            <stringProp name="CounterConfig.format"></stringProp>
+            <boolProp name="CounterConfig.per_user">false</boolProp>
+            <stringProp name="TestPlan.comments">Number of threads * Loops</stringProp>
+          </CounterConfig>
+          <hashTree/>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="subs_id" enabled="true">
+            <stringProp name="CounterConfig.start">1</stringProp>
+            <stringProp name="CounterConfig.end">100000</stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">subs_id</stringProp>
+            <stringProp name="CounterConfig.format"></stringProp>
+            <boolProp name="CounterConfig.per_user">false</boolProp>
+            <stringProp name="TestPlan.comments">Number of threads * Loops</stringProp>
+          </CounterConfig>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE" enabled="false">
+            <stringProp name="dataSource">awspostgresql</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE TABLE t1(i int);
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="initinsert_credit" enabled="false">
+            <stringProp name="dataSource">edbpostgresql</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">Insert into &quot;CREDITCARD_MASTER&quot; values(${acc_id}, &apos;address_${counter}&apos;,&apos;city_${counter}&apos;,&apos;${ccnum}&apos;,${cvc},&apos;email@${counter}&apos;,&apos;${__time(yyyy-MM-dd HH:mm:ss.SSS)}&apos;,&apos;name_${counter}&apos;,&apos;name_${counter}&apos;,${zip});
+
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="initinsert_lib">
+            <stringProp name="dataSource">awspostgresql</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">Insert into &quot;LIBRARY&quot; values(${lib_id},&apos;emailaddr@${lib_id}&apos;);
+
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="initinsert_reader" enabled="false">
+            <stringProp name="dataSource">edbpostgresql</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">Insert into &quot;READER&quot; values(${reader_id},&apos;emailaddr@${reader_id}&apos;,&apos;FirstName_${reader_id}&apos;,&apos;LastName_${reader_id}&apos;);
+
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="initinsert_subs" enabled="false">
+            <stringProp name="dataSource">edbpostgresql</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">Insert into &quot;SUBSCRIPTION&quot; values(${subs_id},&apos;SubsName_${subs_id}&apos;);
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="initinsert_readsubs" enabled="false">
+            <stringProp name="dataSource">edbpostgresql</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">Insert into &quot;READER_SUBSCRIPTIONS&quot; values(${lib_id},${reader_id},${reader_id},${subs_id});
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <RunTime guiclass="RunTimeGui" testclass="RunTime" testname="Runtime Controller" enabled="false">
+          <stringProp name="RunTime.seconds">600</stringProp>
+        </RunTime>
+        <hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop_Selects_Set1" enabled="true">
+            <stringProp name="LoopController.loops">100</stringProp>
+            <stringProp name="TestPlan.comments">Selects 100 of Set 1</stringProp>
+          </LoopController>
+          <hashTree>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="grp_id" enabled="true">
+              <stringProp name="CounterConfig.start">1</stringProp>
+              <stringProp name="CounterConfig.end">4000</stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">grp_id</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">Maximum of max of counter of Loop_Insert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="lib_id_loops" enabled="true">
+              <stringProp name="variableName">lib_id_loops</stringProp>
+              <stringProp name="outputFormat"></stringProp>
+              <stringProp name="minimumValue">1</stringProp>
+              <stringProp name="maximumValue">20000</stringProp>
+              <stringProp name="randomSeed"></stringProp>
+              <boolProp name="perThread">false</boolProp>
+              <stringProp name="TestPlan.comments">Max value can be max of lib_id max value of Loop_Insert_Account_Credit</stringProp>
+            </RandomVariableConfig>
+            <hashTree/>
+            <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="subs_id_loop" enabled="true">
+              <stringProp name="variableName">subs_id_loop</stringProp>
+              <stringProp name="outputFormat"></stringProp>
+              <stringProp name="minimumValue">1</stringProp>
+              <stringProp name="maximumValue">20000</stringProp>
+              <stringProp name="randomSeed"></stringProp>
+              <boolProp name="perThread">false</boolProp>
+              <stringProp name="TestPlan.comments">Max value can be max of subs_id max value of Loop_Insert_Account_Credit</stringProp>
+            </RandomVariableConfig>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select_AccCC" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select &quot;account_id&quot; as ACCID, &quot;AccountName&quot; as ACCNAME, &quot;address&quot; as CUSTADDR, &quot;email&quot; as CUSTEMAIL from &quot;ACCOUNT_MASTER&quot; left outer join &quot;CREDITCARD_MASTER&quot; on &quot;ACCOUNT_MASTER&quot;.account_id = &quot;CREDITCARD_MASTER&quot;.creditcard_id where &quot;groupID&quot; = ${grp_id};
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select_LibReader1" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select libraryent0_.&quot;ID&quot; as id1_2_1_, libraryent0_.&quot;EMAIL&quot; as email2_2_1_, readerenti1_.&quot;LibraryEntity_ID&quot; as librarye1_4_3_, readerenti2_.&quot;ID&quot; as readeren2_4_3_, readerenti2_.&quot;ID&quot; as id1_3_0_, readerenti2_.&quot;EMAIL&quot; as email2_3_0_, readerenti2_.&quot;FIRST_NAME&quot; as first_na3_3_0_, readerenti2_.&quot;LAST_NAME&quot; as last_nam4_3_0_ from &quot;LIBRARY&quot; libraryent0_ left outer join &quot;READER_SUBSCRIPTIONS&quot; readerenti1_ on libraryent0_.&quot;ID&quot;=readerenti1_.&quot;LibraryEntity_ID&quot; left outer join &quot;READER&quot; readerenti2_ on readerenti1_.&quot;readerEntities_ID&quot;=readerenti2_.&quot;ID&quot; where libraryent0_.&quot;ID&quot;=${lib_id_loops};</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select_Subs" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select subscripti0_.&quot;ID&quot; as id1_5_0_, subscripti0_.&quot;SUBS_NAME&quot; as subs_nam2_5_0_ from &quot;SUBSCRIPTION&quot; subscripti0_ where subscripti0_.&quot;ID&quot;= ${subs_id_loop};
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop_Updates_Set1" enabled="true">
+            <stringProp name="LoopController.loops">10</stringProp>
+            <stringProp name="TestPlan.comments">Updates 10</stringProp>
+          </LoopController>
+          <hashTree>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="loop_acccredit_id" enabled="true">
+              <stringProp name="CounterConfig.start">1001</stringProp>
+              <stringProp name="CounterConfig.end">21000</stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">ccupdt_id</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">true</boolProp>
+              <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+              <stringProp name="TestPlan.comments">Per acc_id of Loop_Insert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="reader_id_loop" enabled="true">
+              <stringProp name="CounterConfig.start">1</stringProp>
+              <stringProp name="CounterConfig.end">200001</stringProp>
+              <stringProp name="CounterConfig.incr">10</stringProp>
+              <stringProp name="CounterConfig.name">reader_id_loop</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">Perf reader_id of Loop_Insert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Update &quot;CREDITCARD_MASTER&quot; SET &quot;expiry&quot; = &apos;${__time(yyyy-MM-dd HH:mm:ss.SSS)}&apos; where &quot;creditcard_id&quot; = ${ccupdt_id};
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Update statement</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Update &quot;READER&quot; SET &quot;LAST_NAME&quot; = &apos;SurName_${reader_id_loop}&apos; where &quot;FIRST_NAME&quot; = &apos;FirstName_${reader_id_loop}&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Update statement</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop_Inserts" enabled="true">
+            <stringProp name="LoopController.loops">2</stringProp>
+          </LoopController>
+          <hashTree>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="counter" enabled="true">
+              <stringProp name="CounterConfig.start">1</stringProp>
+              <stringProp name="CounterConfig.end">4000</stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">counter</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">Per counter of Loop_Insert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="ccnum" enabled="true">
+              <stringProp name="maximumValue">99999999</stringProp>
+              <stringProp name="minimumValue">1000000</stringProp>
+              <stringProp name="outputFormat"></stringProp>
+              <boolProp name="perThread">false</boolProp>
+              <stringProp name="randomSeed"></stringProp>
+              <stringProp name="variableName">ccnum</stringProp>
+            </RandomVariableConfig>
+            <hashTree/>
+            <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="cvc" enabled="true">
+              <stringProp name="variableName">cvc</stringProp>
+              <stringProp name="outputFormat"></stringProp>
+              <stringProp name="minimumValue">100</stringProp>
+              <stringProp name="maximumValue">999</stringProp>
+              <stringProp name="randomSeed"></stringProp>
+              <boolProp name="perThread">false</boolProp>
+            </RandomVariableConfig>
+            <hashTree/>
+            <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="zip" enabled="true">
+              <stringProp name="variableName">zip</stringProp>
+              <stringProp name="outputFormat"></stringProp>
+              <stringProp name="minimumValue">10000</stringProp>
+              <stringProp name="maximumValue">99999</stringProp>
+              <stringProp name="randomSeed"></stringProp>
+              <boolProp name="perThread">false</boolProp>
+            </RandomVariableConfig>
+            <hashTree/>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="acccredit_id" enabled="true">
+              <stringProp name="CounterConfig.start">21001</stringProp>
+              <stringProp name="CounterConfig.end">999999</stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">acccredit_id</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">+1 of Max of acc_id of TG_InitInsert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="lib_id" enabled="true">
+              <stringProp name="CounterConfig.start">20001</stringProp>
+              <stringProp name="CounterConfig.end">9999999</stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">lib_id</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">+1 of Max of lib_id of TG_InitInsert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="reader_id_loop" enabled="true">
+              <stringProp name="CounterConfig.start">200011</stringProp>
+              <stringProp name="CounterConfig.end">9999999</stringProp>
+              <stringProp name="CounterConfig.incr">10</stringProp>
+              <stringProp name="CounterConfig.name">reader_id_loop</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">+10 of Max of reader_id of TG_InitInsert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="subs_id_rt" enabled="true">
+              <stringProp name="CounterConfig.start">20001</stringProp>
+              <stringProp name="CounterConfig.end">999999</stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">subs_id_rt</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">+1 of Max of subs_id of TG_InitInsert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loop_insert_acc" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Insert into &quot;ACCOUNT_MASTER&quot; values(${acccredit_id}, &apos;AccName_${counter}&apos;,${counter});
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Inserts 2</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loop_insert_credit" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Insert into &quot;CREDITCARD_MASTER&quot; values(${acccredit_id}, &apos;address_${counter}&apos;,&apos;city_${counter}&apos;,&apos;${ccnum}&apos;,${cvc},&apos;email@${counter}&apos;,&apos;${__time(yyyy-MM-dd HH:mm:ss.SSS)}&apos;,&apos;name_${counter}&apos;,&apos;name_${counter}&apos;,${zip});
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Inserts 2</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loop_insert_lib" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Insert into &quot;LIBRARY&quot; values(${lib_id},&apos;emailaddr@${lib_id}&apos;);
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Inserts 2</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loop_insert_reader" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Insert into &quot;READER&quot; values(${reader_id_loop},&apos;emailaddr@${reader_id_loop}&apos;,&apos;FirstName_${reader_id_loop}&apos;,&apos;LastName_${reader_id_loop}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Inserts 2</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loop_insert_subs" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Insert into &quot;SUBSCRIPTION&quot; values(${subs_id_rt},&apos;SubsName_${subs_id_rt}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Inserts 2</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loop_insert_readsubs" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Insert into &quot;READER_SUBSCRIPTIONS&quot; values(${lib_id},${reader_id_loop},${reader_id_loop},${subs_id_rt});
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Inserts 2</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop_Selects_Set2" enabled="true">
+            <stringProp name="LoopController.loops">100</stringProp>
+            <stringProp name="TestPlan.comments">Selects 100 of Set 1</stringProp>
+          </LoopController>
+          <hashTree>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="grp_id" enabled="true">
+              <stringProp name="CounterConfig.start">1</stringProp>
+              <stringProp name="CounterConfig.end">4000</stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">grp_id</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">Maximum of max of counter of Loop_Insert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="lib_id_loops" enabled="true">
+              <stringProp name="variableName">lib_id_loops</stringProp>
+              <stringProp name="outputFormat"></stringProp>
+              <stringProp name="minimumValue">1</stringProp>
+              <stringProp name="maximumValue">20000</stringProp>
+              <stringProp name="randomSeed"></stringProp>
+              <boolProp name="perThread">false</boolProp>
+              <stringProp name="TestPlan.comments">Max value can be max of lib_id max value of Loop_Insert_Account_Credit</stringProp>
+            </RandomVariableConfig>
+            <hashTree/>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="reader_id" enabled="true">
+              <stringProp name="CounterConfig.start">1</stringProp>
+              <stringProp name="CounterConfig.end">200001</stringProp>
+              <stringProp name="CounterConfig.incr">10</stringProp>
+              <stringProp name="CounterConfig.name">reader_id</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">Maximum can be max of reader_id of Loop_Insert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="subs_id_loop" enabled="true">
+              <stringProp name="variableName">subs_id_loop</stringProp>
+              <stringProp name="outputFormat"></stringProp>
+              <stringProp name="minimumValue">1</stringProp>
+              <stringProp name="maximumValue">20000</stringProp>
+              <stringProp name="randomSeed"></stringProp>
+              <boolProp name="perThread">false</boolProp>
+              <stringProp name="TestPlan.comments">Max value can be max of subs_id max value of Loop_Insert_Account_Credit</stringProp>
+            </RandomVariableConfig>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select_AccCC" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select &quot;account_id&quot; as ACCID, &quot;AccountName&quot; as ACCNAME, &quot;address&quot; as CUSTADDR, &quot;email&quot; as CUSTEMAIL from &quot;ACCOUNT_MASTER&quot; left outer join &quot;CREDITCARD_MASTER&quot; on &quot;ACCOUNT_MASTER&quot;.account_id = &quot;CREDITCARD_MASTER&quot;.creditcard_id where &quot;groupID&quot; = ${grp_id};
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select_LibReader2" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">Select &quot;LIBRARY&quot;.&quot;EMAIL&quot; as Email, &quot;FIRST_NAME&quot; as FirstName, &quot;LAST_NAME&quot; as LastName from &quot;LIBRARY&quot; left outer join &quot;READER&quot; on &quot;LIBRARY&quot;.&quot;ID&quot; = &quot;READER&quot;.&quot;ID&quot; where &quot;LIBRARY&quot;.&quot;ID&quot; = ${lib_id_loops};
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select_ReaderReadSubs" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select readerenti0_.&quot;ID&quot; as id1_3_1_, readerenti0_.&quot;EMAIL&quot; as email2_3_1_, readerenti0_.&quot;FIRST_NAME&quot; as first_na3_3_1_, readerenti0_.&quot;LAST_NAME&quot; as last_nam4_3_1_, subscripti1_.&quot;readers_ID&quot; as readers_3_4_3_, subscripti2_.&quot;ID&quot; as subscrip4_4_3_, subscripti2_.&quot;ID&quot; as id1_5_0_, subscripti2_.&quot;SUBS_NAME&quot; as subs_nam2_5_0_ from &quot;READER&quot; readerenti0_ left outer join &quot;READER_SUBSCRIPTIONS&quot; subscripti1_ on readerenti0_.&quot;ID&quot;=subscripti1_.&quot;readers_ID&quot; left outer join &quot;SUBSCRIPTION&quot; subscripti2_ on subscripti1_.&quot;subscriptions_ID&quot;=subscripti2_.&quot;ID&quot; where readerenti0_.&quot;ID&quot;=${reader_id};</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select_Subs" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select subscripti0_.&quot;ID&quot; as id1_5_0_, subscripti0_.&quot;SUBS_NAME&quot; as subs_nam2_5_0_ from &quot;SUBSCRIPTION&quot; subscripti0_ where subscripti0_.&quot;ID&quot;=${subs_id_loop};</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop_Updates_Set2" enabled="true">
+            <stringProp name="LoopController.loops">10</stringProp>
+            <stringProp name="TestPlan.comments">Updates 10</stringProp>
+          </LoopController>
+          <hashTree>
+            <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="ccupdt_id" enabled="true">
+              <stringProp name="variableName">ccupdt_id</stringProp>
+              <stringProp name="outputFormat"></stringProp>
+              <stringProp name="minimumValue">1001</stringProp>
+              <stringProp name="maximumValue">21000</stringProp>
+              <stringProp name="randomSeed"></stringProp>
+              <boolProp name="perThread">false</boolProp>
+              <stringProp name="TestPlan.comments">Per acc_id of Loop_Insert_Account_Credit</stringProp>
+            </RandomVariableConfig>
+            <hashTree/>
+            <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="subsnamesupp" enabled="true">
+              <stringProp name="variableName">subsnamesupp</stringProp>
+              <stringProp name="outputFormat"></stringProp>
+              <stringProp name="minimumValue">1</stringProp>
+              <stringProp name="maximumValue">9999999</stringProp>
+              <stringProp name="randomSeed"></stringProp>
+              <boolProp name="perThread">false</boolProp>
+              <stringProp name="TestPlan.comments">any value</stringProp>
+            </RandomVariableConfig>
+            <hashTree/>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="subs_id_loop" enabled="true">
+              <stringProp name="CounterConfig.start">1</stringProp>
+              <stringProp name="CounterConfig.end">20000</stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">subs_id_loop</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+              <stringProp name="TestPlan.comments">Per subs_id of Loop_Insert_Account_Credit</stringProp>
+            </CounterConfig>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update2_CC" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Update &quot;CREDITCARD_MASTER&quot; SET &quot;address&quot; = &apos;Addr_${__time(yyyy-MM-dd HH:mm:ss.SSS)}&apos; where &quot;creditcard_id&quot; = ${ccupdt_id};
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Update statement</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update2_subs" enabled="true">
+              <stringProp name="dataSource">edbpostgresql</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">Update &quot;SUBSCRIPTION&quot; SET &quot;SUBS_NAME&quot; = &apos;Subscription_${__time(/1000)}_${subsnamesupp}&apos; where &quot;ID&quot; = ${subs_id_loop};
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Update statement</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Select Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">1</stringProp>
+                <stringProp name="RandomTimer.range"></stringProp>
+              </UniformRandomTimer>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

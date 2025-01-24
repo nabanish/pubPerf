@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="MongoDBEE">
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="MongoDB">
+        <intProp name="ThreadGroup.num_threads">24</intProp>
+        <longProp name="ThreadGroup.duration">3600</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="mongoHost" elementType="Argument">
+              <stringProp name="Argument.name">mongoHost</stringProp>
+              <stringProp name="Argument.value"><server-dns></stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="mongoPort" elementType="Argument">
+              <stringProp name="Argument.name">mongoPort</stringProp>
+              <stringProp name="Argument.value">27017</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="databaseName" elementType="Argument">
+              <stringProp name="Argument.name">databaseName</stringProp>
+              <stringProp name="Argument.value">admin</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="mongoUser" elementType="Argument">
+              <stringProp name="Argument.name">mongoUser</stringProp>
+              <stringProp name="Argument.value">admin</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="userDB" elementType="Argument">
+              <stringProp name="Argument.name">userDB</stringProp>
+              <stringProp name="Argument.value">admin</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="password" elementType="Argument">
+              <stringProp name="Argument.name">password</stringProp>
+              <stringProp name="Argument.value">pwd</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config">
+          <stringProp name="filename">/opt/jmeter/scripts/DocData.csv</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="variableNames">fName,lName,age,occupation,skills,city,street,house,collectionName</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Connect_MongoDB">
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="script">import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoClient;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoCredential;
+import com.mongodb.DBCollection;
+
+import org.bson.Document;
+
+import java.util.Arrays;
+
+try {
+MongoCredential mgcredential = MongoCredential.createCredential(vars.get(&quot;mongoUser&quot;), vars.get(&quot;userDB&quot;), vars.get(&quot;password&quot;).toCharArray());
+MongoClientSettings settings = MongoClientSettings.builder()
+.applyToClusterSettings {builder -&gt; 
+builder.hosts(Arrays.asList(new ServerAddress(vars.get(&quot;mongoHost&quot;),vars.get(&quot;mongoPort&quot;).toInteger())))}.credential(mgcredential)
+.build();
+
+MongoClient mongoClient = MongoClients.create(settings);
+
+MongoDatabase database = mongoClient.getDatabase(vars.get(&quot;databaseName&quot;));
+vars.putObject(&quot;database&quot;,database);
+MongoCollection&lt;Document&gt; collection = database.getCollection(vars.get(&quot;collectionName&quot;));
+
+
+vars.putObject(&quot;collection&quot;, collection);
+
+return &quot;Connected to &quot; + vars.get(&quot;collectionName&quot;);
+}
+catch (Exception e) {
+SampleResult.setSuccessful(false);
+SampleResult.setResponseCode(&quot;500&quot;);
+SampleResult.setResponseMessage(&quot;Exception: &quot; + e);
+}</stringProp>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Think Time">
+          <intProp name="ActionProcessor.action">1</intProp>
+          <intProp name="ActionProcessor.target">0</intProp>
+          <stringProp name="ActionProcessor.duration">0</stringProp>
+        </TestAction>
+        <hashTree>
+          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Pause" enabled="true">
+            <stringProp name="ConstantTimer.delay">4</stringProp>
+            <stringProp name="RandomTimer.range">0</stringProp>
+          </UniformRandomTimer>
+          <hashTree/>
+        </hashTree>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="IterateOnly">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <stringProp name="TestPlan.comments">Samplers to iterate only</stringProp>
+        </LoopController>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="CreateDrop">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.DBCollection;
+import org.bson.Document;
+
+
+try{
+	MongoDatabase database = vars.getObject(&quot;database&quot;);
+	DBCollection school = database.createCollection(&quot;NewCollectionMongo&quot;);
+MongoCollection&lt;Document&gt; collection1 = database.getCollection(&quot;NewCollectionMongo&quot;);
+//collection1.drop();
+}
+catch (Exception e) {
+SampleResult.setSuccessful(false);
+SampleResult.setResponseCode(&quot;500&quot;);
+SampleResult.setResponseMessage(&quot;Exception: &quot; + e);
+}
+</stringProp>
+          </JSR223Sampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Write_MongoDB">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import com.mongodb.client.MongoCollection;
+
+import org.bson.Document;
+
+import java.util.Arrays;
+
+try {
+MongoCollection&lt;Document&gt; collection = vars.getObject(&quot;collection&quot;);
+
+Document document = new Document(&quot;firstName&quot;, &quot;${fName}&quot;)
+.append(&quot;lastName&quot;, &quot;${lName}&quot;)
+.append(&quot;age&quot;, ${age})
+.append(&quot;occupation&quot;, &quot;${occupation}&quot;)
+.append(&quot;skills&quot;, Arrays.asList(&quot;${skills}&quot;, &quot;Linux&quot;))
+.append(&quot;address&quot;, new Document(&quot;city&quot;, &quot;${city}&quot;)
+.append(&quot;street&quot;, &quot;${street}&quot;)
+.append(&quot;house&quot;, ${house}));
+
+collection.insertOne(document);
+
+return &quot;Document inserted&quot;;
+}
+catch (Exception e) {
+SampleResult.setSuccessful(false);
+SampleResult.setResponseCode(&quot;500&quot;);
+SampleResult.setResponseMessage(&quot;Exception: &quot; + e);
+}</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Think Time">
+            <intProp name="ActionProcessor.action">1</intProp>
+            <intProp name="ActionProcessor.target">0</intProp>
+            <stringProp name="ActionProcessor.duration">0</stringProp>
+          </TestAction>
+          <hashTree>
+            <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Pause" enabled="true">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+              <stringProp name="RandomTimer.range">0</stringProp>
+            </UniformRandomTimer>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="ReadFrom_MongoDB">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import com.mongodb.client.MongoCollection;
+import static com.mongodb.client.model.Filters.*;
+
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+try {
+MongoCollection&lt;Document&gt; collection = vars.getObject(&quot;collection&quot;);
+
+Document result = collection.find(eq(&quot;firstName&quot;, &quot;${fName}&quot;)).first();
+
+vars.put(&quot;exampleDocumentId&quot;, result.get(&quot;_id&quot;).toString());
+
+return &quot;Document with id=&quot; + result.get(&quot;_id&quot;) + &quot; found&quot;;
+}
+catch (Exception e) {
+SampleResult.setSuccessful(false);
+SampleResult.setResponseCode(&quot;500&quot;);
+SampleResult.setResponseMessage(&quot;Exception: &quot; + e);
+}</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Think Time" enabled="true">
+            <intProp name="ActionProcessor.action">1</intProp>
+            <intProp name="ActionProcessor.target">0</intProp>
+            <stringProp name="ActionProcessor.duration">0</stringProp>
+          </TestAction>
+          <hashTree>
+            <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Pause" enabled="true">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+              <stringProp name="RandomTimer.range">0</stringProp>
+            </UniformRandomTimer>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Update_MongoDB">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import com.mongodb.client.MongoCollection;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Updates.*;
+
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+try {
+MongoCollection&lt;Document&gt; collection = vars.getObject(&quot;collection&quot;);
+
+collection.updateOne(
+eq(&quot;_id&quot;, new ObjectId(vars.get(&quot;exampleDocumentId&quot;))),
+combine(set(&quot;occupation&quot;, &quot;Project Manager&quot;), set(&quot;adress.city&quot;, &quot;New Codeshire&quot;), currentDate(&quot;lastModified&quot;)));
+
+return &quot;Document with id=&quot; + vars.get(&quot;exampleDocumentId&quot;) + &quot; modified&quot;;
+}
+catch (Exception e) {
+SampleResult.setSuccessful(false);
+SampleResult.setResponseCode(&quot;500&quot;);
+SampleResult.setResponseMessage(&quot;Exception: &quot; + e);
+}</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Think Time" enabled="true">
+            <intProp name="ActionProcessor.action">1</intProp>
+            <intProp name="ActionProcessor.target">0</intProp>
+            <stringProp name="ActionProcessor.duration">0</stringProp>
+          </TestAction>
+          <hashTree>
+            <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Pause" enabled="true">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+              <stringProp name="RandomTimer.range">0</stringProp>
+            </UniformRandomTimer>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="DeleteDoc_MongoDB" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import com.mongodb.client.MongoCollection;
+import static com.mongodb.client.model.Filters.*;
+
+import org.bson.Document;
+
+try {
+MongoCollection&lt;Document&gt; collection = vars.getObject(&quot;collection&quot;);
+
+collection.deleteOne(eq(&quot;occupation&quot;, &quot;Project Manager&quot;));
+
+return &quot;Document deleted&quot;;
+}
+catch (Exception e) {
+SampleResult.setSuccessful(false);
+SampleResult.setResponseCode(&quot;500&quot;);
+SampleResult.setResponseMessage(&quot;Exception: &quot; + e);
+}</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Think Time" enabled="true">
+            <intProp name="ActionProcessor.action">1</intProp>
+            <intProp name="ActionProcessor.target">0</intProp>
+            <stringProp name="ActionProcessor.duration">0</stringProp>
+          </TestAction>
+          <hashTree>
+            <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Pause" enabled="true">
+              <stringProp name="ConstantTimer.delay">1</stringProp>
+              <stringProp name="RandomTimer.range">0</stringProp>
+            </UniformRandomTimer>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
