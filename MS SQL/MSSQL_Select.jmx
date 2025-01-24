@@ -19,13 +19,13 @@
         <stringProp name="driver">com.microsoft.sqlserver.jdbc.SQLServerDriver</stringProp>
         <stringProp name="initQuery"></stringProp>
         <boolProp name="keepAlive">true</boolProp>
-        <stringProp name="password">Guardium1234567</stringProp>
+        <stringProp name="password">pwd</stringProp>
         <stringProp name="poolMax">0</stringProp>
         <boolProp name="preinit">false</boolProp>
         <stringProp name="timeout">10000</stringProp>
         <stringProp name="transactionIsolation">DEFAULT</stringProp>
         <stringProp name="trimInterval">60000</stringProp>
-        <stringProp name="username">sa</stringProp>
+        <stringProp name="username">username</stringProp>
       </JDBCDataSource>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="TG_Select">
