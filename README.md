@@ -117,6 +117,54 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
 8.  Add Data-source as the prometheus already setup by providing the prometheus details: http://<server-ip>:9090 and provide a name
 9.  You may see the default metrics scraped by Prometheus for prometheus itself on the Metrics dashboard:
      <img width="1723" alt="Grafana_Default_DashboardforPrometheus" src="https://github.com/user-attachments/assets/2d526502-1cd3-4211-9ffd-cb7133892584" />
+
+## Monitoring Logstash with Prometheus-Grafana Stand-alone
+1. Download logstash jmx exporter from https://github.com/kuskoman/logstash-exporter/releases. Refer to https://github.com/kuskoman/logstash-exporter/blob/master/README.md for more details.
+### 2. Install golang
+       1. sudo dnf update
+       2. wget https://go.dev/dl/go1.23.6.linux-amd64.tar.gz or any latest build
+       3. sudo tar -C /usr/local -xzf go1.23.6.linux-amd64.tar.gz 
+       4. Add the following in .bashrc:
+            export PATH=$PATH:/usr/local/go/bin
+	    export GOPATH=$HOME/go
+            export PATH=$PATH:$GOPATH/bin
+       5. source ~/.bashrc and then check go version
+3. Change the prometheus.yml file to read logstash exporter metrics by vi /etc/prometheus/prometheus.yml with
+     ``` 
+      - job_name: 'logstash'
+        static_configs:
+          - targets: ["localhost:9198"]
+      ```
+4. Create a systemd service by vi /etc/systemd/system/logstashexport.service
+   ```
+      [Unit]
+      Description=Logstash Exporter for Prometheus
+      After=network.target
+      [Service]
+      User=root
+      Group=root
+      ExecStart=/var/logstash-exporter-linux
+      Type=simple
+      [Install]
+      WantedBy=multi-user.target
+   ```
+ 5. sudo systemctl daemon-reload and then systemctl start logstashexport.service
+ 6. Verify the service running by: systemctl status logstashexport.service and then curl http://localhost:9198/metrics
+ 7. sudo systemctl enable logstashexport.service to enable the service on boot
+ 8. Verify the metrics using http://<server-name>:9198/metrics from a local browser
+ 9. Restart prometheus to start reading the metrics
+     ```
+       sudo systemctl daemon-reload
+       systemctl stop prometheus
+       systemctl start prometheus
+       systemctl status prometheus
+     ```
+10. Import your prometheus in Grafana data-sources as outlined in previous section
+11. Add dashboard in Grafana. You may add from Explore->Metrics or import an already created dashboard json file from git-hub
+12. View the metrics on the dashboard:
+    
+	<img width="1702" alt="Logstash_Dashboard" src="https://github.com/user-attachments/assets/0f179d5a-fac1-485a-9d9e-ec931b5fb48d" />
+ 
 ## Monitoring Kafka with Prometheus
 1.  Download Prometheus JMX Exporter: wget https://repo.maven.apache.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.20.0/jmx_prometheus_javaagent-0.20.0.jar or any latest version
 2.  Move the exporter to kafka/libs: sudo mv jmx_prometheus_javaagent-0.20.0.jar  /opt/kafka/libs/
