@@ -30,13 +30,15 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
   11.Go to bin folder of jmeter: `cd /opt/jmeter/bin` and change the heap, non-heap memory of jmeter as : `"${HEAP:="-Xms2g -Xmx2g -XX:MaxMetaspaceSize=512m"}"`
   12. Verify the version of jmeter: `jmeter --version`
 ## Install and Setup Prometheus
-1. Add system user group: sudo groupadd --system prometheus and sudo useradd -s /sbin/nologin --system -g prometheus prometheus
-2. Create directory for Prometheus: sudo mkdir /var/lib/prometheus
+1. Add system user group: `sudo groupadd --system prometheus` and `sudo useradd -s /sbin/nologin --system -g prometheus prometheus`
+2. Create directory for Prometheus: `sudo mkdir /var/lib/prometheus`
 3. Create configuration directories for Prometheus:
-4. for i in rules rules.d files_sd; do
+ ```
+   for i in rules rules.d files_sd; do
    sudo mkdir -p /etc/prometheus/${i};
-  done
-5. Go to the directory where you want Prometheus to reside: cd /opt and Download the latest version of Prometheus by running:  
+   done
+```
+4. Go to the directory where you want Prometheus to reside: cd /opt and Download the latest version of Prometheus by running:  
   ```
   curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest \
   | grep browser_download_url \
@@ -44,11 +46,14 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
   | cut -d '"' -f 4 \
   | wget -qi -
   ```
-6. Extract the file and place in the $PATH directory: tar xvf prometheus-*.tar.gz
+5. Extract the file and place in the $PATH directory:
+ ```
+   tar xvf prometheus-*.tar.gz
    cd prometheus-*/
    sudo cp prometheus promtool /usr/local/bin/
-7. If console and console_libraries are present, then copy them too: sudo cp -r prometheus.yml consoles/ console_libraries/ /etc/prometheus/
-8. Create a systemd service file for Prometheus: sudo vi /etc/systemd/system/prometheus.service and add the below contents:
+ ```
+6. If console and console_libraries are present, then copy them too: ```sudo cp -r prometheus.yml consoles/ console_libraries/ /etc/prometheus/```
+7. Create a systemd service file for Prometheus: `sudo vi /etc/systemd/system/prometheus.service` and add the below contents:
    ```
     [Unit]
       Description=Prometheus
@@ -75,14 +80,16 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
       [Install]
       WantedBy=multi-user.target
      ```
-9. Set correct directoy permissions:
+8. Set correct directoy permissions:
+      ```
          sudo chown -R prometheus:prometheus /etc/prometheus
          sudo chmod -R 775 /etc/prometheus/
          sudo chown -R prometheus:prometheus /var/lib/prometheus/
-10. Reload the daemon:sudo systemctl daemon-reload and then start Prometheus service: sudo systemctl start prometheus
-11. Verify the service to be running: systemctl status prometheus
-12. Enable the service at start-up: sudo systemctl enable prometheus
-13. Disable firewalld as required. You may use selective:
+      ```
+9. Reload the daemon:`sudo systemctl daemon-reload` and then start Prometheus service: `sudo systemctl start prometheus`
+10. Verify the service to be running: `systemctl status prometheus`
+11. Enable the service at start-up: `sudo systemctl enable prometheus`
+12. Disable firewalld as required. You may use selective:
        ```
          sudo firewall-cmd --permanent --add-rich-rule 'rule family="ipv4" \
          source address="192.168.122.0/24" \
@@ -94,10 +101,10 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
          sudo firewall-cmd --add-port=9090/tcp --permanent
          sudo firewall-cmd --reload
     ```
-14. Open Prometheus UI using a browser by launching: http://server-ip:9090
+13. Open Prometheus UI using a browser by launching: **http://server-ip:9090**
     <img width="1723" alt="Prometheus_DefaultQueries" src="https://github.com/user-attachments/assets/8b538179-3b01-4d05-bf08-409d291db2db" />
 
-16. You may alternatively use this shell script to do the installation, change the version as required: https://github.com/nabanish/Performance/blob/main/InstallPrometheus.sh
+14. You may alternatively use this shell script to do the installation, change the version as required: https://github.com/nabanish/Performance/blob/main/InstallPrometheus.sh
 ## Install and Run Grafana
 1.  Add Grafana to yum repository:
        ```
