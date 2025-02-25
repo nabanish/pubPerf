@@ -120,26 +120,28 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
           sslcacert=/etc/pki/tls/certs/ca-bundle.crt
           EOF
        ```
-2.  Insall Grafana : sudo dnf -y install grafana
-3.  Verify package info: rpm -qi grafana
-4.  Start Grafana service: sudo systemctl enable --now grafana-server.service
-5.  Verify the Grafana service status: systemctl status grafana-server.service
-6.  Launch http://<server-ip>:3000 to open Grafana UI
+2.  Insall Grafana : `sudo dnf -y install grafana`
+3.  Verify package info: `rpm -qi grafana`
+4.  Start Grafana service: `sudo systemctl enable --now grafana-server.service`
+5.  Verify the Grafana service status: `systemctl status grafana-server.service`
+6.  Launch **http://server-ip:3000** to open Grafana UI
 7.  Default credentials are admin/admin. Change the password on first login
-8.  Add Data-source as the prometheus already setup by providing the prometheus details: http://<server-ip>:9090 and provide a name
+8.  Add Data-source as the prometheus already setup by providing the prometheus details: **http://server-ip:9090** and provide a name
 9.  You may see the default metrics scraped by Prometheus for prometheus itself on the Metrics dashboard:
      <img width="1723" alt="Grafana_Default_DashboardforPrometheus" src="https://github.com/user-attachments/assets/2d526502-1cd3-4211-9ffd-cb7133892584" />
 
 ## Monitoring Logstash with Prometheus-Grafana Stand-alone
 1. Download logstash jmx exporter from https://github.com/kuskoman/logstash-exporter/releases. Refer to https://github.com/kuskoman/logstash-exporter/blob/master/README.md for more details.
 ### 2. Install golang
-       1. sudo dnf update
-       2. wget https://go.dev/dl/go1.23.6.linux-amd64.tar.gz or any latest build
-       3. sudo tar -C /usr/local -xzf go1.23.6.linux-amd64.tar.gz 
+       1. Update the repo: `sudo dnf update`
+       2. Download the go tar: `wget https://go.dev/dl/go1.23.6.linux-amd64.tar.gz` or any latest build
+       3. Copy in required directory: `sudo tar -C /usr/local -xzf go1.23.6.linux-amd64.tar.gz` 
        4. Add the following in .bashrc:
+          ```
             export PATH=$PATH:/usr/local/go/bin
 	    export GOPATH=$HOME/go
             export PATH=$PATH:$GOPATH/bin
+	  ```  
        5. source ~/.bashrc and then check go version
 3. Change the prometheus.yml file to read logstash exporter metrics by vi /etc/prometheus/prometheus.yml with
      ``` 
