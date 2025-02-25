@@ -1,29 +1,34 @@
 # Performance Testing & Engineering - Open-source
 ## You need to have Java
   Firstly, on your RHEL machines, install java if not available already. Assuming you are root user:
-  1. Update repo: yum update
-  2. Install JDK: yum install java-21-openjdk
-  3. Verify java version : java -version
-  4. If the java version is not what was installed, use: sudo update-alternatives --config 'java'
+  1. Update repo: `yum update`
+  2. Install JDK: `yum install java-21-openjdk`
+  3. Verify java version : `java -version`
+  4. If the java version is not what was installed, use: `sudo update-alternatives --config 'java'`
   5. Select the correct java version from the list
-  6. Verify again: java -version
+  6. Verify again: `java -version`
 ## Installing JMeter in Linux(RHEL9)
 On the RHEL machine that you will use as JMeter server, go to any directory of your choice. Here, the /opt directory will be used.
-  1. Download the latest version of JMeter: curl -O https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.3.tgz
-  2. Extract the tar: tar -xvf apache-jmeter-5.6.3.tgz
-  3. Rename the extracted folder: cp -r apache-jmeter-5.6.3 jmeter and then remove the original folder: rm -rf apache-jmeter-5.6.3
-  4. Get into jmeter folder and remove unnecessary folders or documents: cd jmeter and then: rm -rf printable_docs/ docs/
-  5. Get into lib folder: cd lib/ and download the latest cmd runner from maven: curl -O https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.3/cmdrunner-2.3.jar
-  6. Get into ext foleer: cd ext/ and download the latest jmeter plugin manager: curl -O https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.9/jmeter-plugins-manager-1.9.jar
-  7. Get back to the lib folder: cd .. and then start the installation of the jmeter plugins: java  -jar cmdrunner-2.3.jar --tool org.jmeterplugins.repository.PluginManagerCMD install-all-except jpgc-hadoop,jpgc-oauth,ulp-jmeter-autocorrelator-plugin,ulp-jmeter-videostreaming-plugin,ulp-jmeter-gwt-plugin,tilln-iso8583
+  1. Download the latest version of JMeter: `curl -O https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.3.tgz`
+  2. Extract the tar: `tar -xvf apache-jmeter-5.6.3.tgz`
+  3. Rename the extracted folder: `cp -r apache-jmeter-5.6.3 jmeter` and then remove the original folder: `rm -rf apache-jmeter-5.6.3`
+  4. Get into jmeter folder and remove unnecessary folders or documents: cd jmeter and then: `rm -rf printable_docs/ docs/`
+  5. Get into lib folder: `cd lib/` and download the latest cmd runner from maven: `curl -O https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.3/cmdrunner-2.3.jar`
+  6. Get into ext foleer: `cd ext/` and download the latest jmeter plugin manager: `curl -O https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.9/jmeter-plugins-manager-1.9.jar`
+  7. Get back to the lib folder: cd .. and then start the installation of the jmeter plugins:
+     ```
+     java  -jar cmdrunner-2.3.jar --tool org.jmeterplugins.repository.PluginManagerCMD install-all-except jpgc-hadoop,jpgc-oauth,ulp-jmeter-autocorrelator-plugin,ulp-jmeter-videostreaming-plugin,ulp-jmeter-gwt-plugin,tilln-iso8583
+     ```
   8. Go to the ~ directory: cd ~ and then open the .bashrc file using vi: vi .bashrc
   9. Add the path to JMeter and save the file:
+      ```
         JMETER_HOME="/opt/jmeter"
         PATH="$JMETER_HOME/bin:$PATH"
         export PATH
-  10. Source the file: source ~/.bashrc
-  11.Go to bin folder of jmeter: cd /opt/jmeter/bin and change the heap, non-heap memory of jmeter as : "${HEAP:="-Xms2g -Xmx2g -XX:MaxMetaspaceSize=512m"}"
-  12. Verify the version of jmeter: jmeter --version
+      ```
+  10. Source the file: `source ~/.bashrc`
+  11.Go to bin folder of jmeter: `cd /opt/jmeter/bin` and change the heap, non-heap memory of jmeter as : `"${HEAP:="-Xms2g -Xmx2g -XX:MaxMetaspaceSize=512m"}"`
+  12. Verify the version of jmeter: `jmeter --version`
 ## Install and Setup Prometheus
 1. Add system user group: sudo groupadd --system prometheus and sudo useradd -s /sbin/nologin --system -g prometheus prometheus
 2. Create directory for Prometheus: sudo mkdir /var/lib/prometheus
