@@ -305,10 +305,11 @@ rules:
 10. Verify kafka and prometheus status: `sudo systemctl status prometheus` and `sudo systemctl status kafka`
 ## Expose jmx metrics and monitor in jVisualVM or JConsole
 To monitor any java application, the JMX metrics need to be exposed. For example, in case of Kafka, do the following:
-1.  Modify the kafka-run-class.sh to have JMX_PORT="nnnn". Pass this JMX_PORT variable to KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false
-2.  Restart kafka service
-3.  Open terminal and open jconsole
-4.  In the Remote process, use the kafka server-ip and the JMX_PORT value and connect insecuredly.
+1.  Modify the kafka-run-class.sh to have JMX_PORT="nnnn". Pass this JMX_PORT variable to
+    >KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false
+3.  Restart kafka service
+4.  Open terminal and open jconsole
+5.  In the Remote process, use the kafka server-ip and the JMX_PORT value and connect insecuredly.
     ![jconsole jvm monitoring](https://github.com/user-attachments/assets/bfab5f22-aff0-4eb4-b295-78b9ac89eaf5)
     ![VisualVM](https://github.com/user-attachments/assets/6eaab478-dd8a-4bf8-b4eb-8b57f2daca92)
 
