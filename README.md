@@ -132,24 +132,24 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
 
 ## Monitoring Logstash with Prometheus-Grafana Stand-alone
 1. Download logstash jmx exporter from https://github.com/kuskoman/logstash-exporter/releases. Refer to https://github.com/kuskoman/logstash-exporter/blob/master/README.md for more details.
-### 2. Install golang
-       1. Update the repo: `sudo dnf update`
-       2. Download the go tar: `wget https://go.dev/dl/go1.23.6.linux-amd64.tar.gz` or any latest build
-       3. Copy in required directory: `sudo tar -C /usr/local -xzf go1.23.6.linux-amd64.tar.gz` 
-       4. Add the following in .bashrc:
-          ```
-            export PATH=$PATH:/usr/local/go/bin
-	    export GOPATH=$HOME/go
-            export PATH=$PATH:$GOPATH/bin
-	  ```  
-       5. source ~/.bashrc and then check go version
-3. Change the prometheus.yml file to read logstash exporter metrics by vi /etc/prometheus/prometheus.yml with
+2. Install golang:
+    1. Update the repo: `sudo dnf update`
+    2. Download the go tar: `wget https://go.dev/dl/go1.23.6.linux-amd64.tar.gz` or any latest build
+    3. Copy in required directory: `sudo tar -C /usr/local -xzf go1.23.6.linux-amd64.tar.gz`
+    4. Add the following in .bashrc:
+       ```
+         export PATH=$PATH:/usr/local/go/bin
+         export GOPATH=$HOME/go
+         export PATH=$PATH:$GOPATH/bin
+       ```
+3. Source ~/.bashrc and then check go version: `go version`  	
+4. Change the prometheus.yml file to read logstash exporter metrics by vi /etc/prometheus/prometheus.yml with
      ``` 
       - job_name: 'logstash'
         static_configs:
           - targets: ["localhost:9198"]
       ```
-4. Create a systemd service by vi /etc/systemd/system/logstashexport.service
+5. Create a systemd service by vi /etc/systemd/system/logstashexport.service
    ```
       [Unit]
       Description=Logstash Exporter for Prometheus
@@ -162,20 +162,19 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
       [Install]
       WantedBy=multi-user.target
    ```
- 5. sudo systemctl daemon-reload and then systemctl start logstashexport.service
- 6. Verify the service running by: systemctl status logstashexport.service and then curl http://localhost:9198/metrics
- 7. sudo systemctl enable logstashexport.service to enable the service on boot
- 8. Verify the metrics using http://<server-name>:9198/metrics from a local browser
- 9. Restart prometheus to start reading the metrics
+ 6. sudo systemctl daemon-reload and then systemctl start logstashexport.service
+ 7. Verify the service running by: systemctl status logstashexport.service and then curl http://localhost:9198/metrics
+ 8. sudo systemctl enable logstashexport.service to enable the service on boot
+ 9. Verify the metrics using http://<server-name>:9198/metrics from a local browser
+ 10. Restart prometheus to start reading the metrics
      ```
        sudo systemctl daemon-reload
        systemctl stop prometheus
        systemctl start prometheus
        systemctl status prometheus
      ```
-10. Import your prometheus in Grafana data-sources as outlined in previous section
-11. Add dashboard in Grafana. You may add from Explore->Metrics or import an already created dashboard json file from git-hub
-12. View the metrics on the dashboard:
+11. Import your prometheus in Grafana data-sources as outlined in previous section
+12. Add dashboard in Grafana. You may add from Explore->Metrics or import an already created dashboard json file from git-hub:
     
 	<img width="1702" alt="Logstash_Dashboard" src="https://github.com/user-attachments/assets/0f179d5a-fac1-485a-9d9e-ec931b5fb48d" />
  
