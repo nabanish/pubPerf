@@ -315,12 +315,12 @@ To monitor any java application, the JMX metrics need to be exposed. For example
 
 ## Install UI for Apache Kafka containerized in podman and monitoring Kafka
 ### Install podman on your machine
-1.  brew install podman
-2.  Verfify podman insallation by: podman --version (prefer >4.0)
-3.  Start podman by: podman machine init  --now and then: podman machine start
+1.  `brew install podman` on Mac or RHEL: `dnf install container-tools` and then `dnf install container-tools`
+2.  Verfify podman insallation by: `podman --version` (prefer >4.0)
+3.  Start podman by: `podman machine init  --now` and then: `podman machine start`
 ### Configure Kafka cluster to monitor and start using UI for Apache Kafka
-1.  Run: podman run -it -p 8080:8080 -e DYNAMIC_CONFIG_ENABLED=true provectuslabs/kafka-ui
-2.  Launch UI for Apache kafka by loading: localhost:8080
+1.  Run: `podman run -it -p 8080:8080 -e DYNAMIC_CONFIG_ENABLED=true provectuslabs/kafka-ui`
+2.  Launch UI for Apache kafka by loading: **localhost:8080**
 3.  On any one of the Kafka brokers of your cluster, put in this sslconfit.txt file in /opt/kafka/bin
     ```
        security.protocol=SSL
@@ -347,16 +347,16 @@ Make sure the latest open-jdk is installed on the jenkins server.
     sudo wget -O /etc/yum.repos.d/jenkins.repo \
     https://pkg.jenkins.io/redhat-stable/jenkins.repo
    ```
-2.  Import GPG key: sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-3.  Install Jenkins: sudo yum install jenkins
-4.  Reload the systemd manager: sudo systemctl daemon-reload
-5.  Start Jenkins server: sudo systemctl start jenkins
-6.  Verify Jenkins service is running: sudo systemctl status jenkins
-7.  Enable Jenkins to start at boot-up: sudo systemctl enable jenkins
-8.  Launch Jenkins: http:<jenkins-server-name>:8080
-9.  Unlock jenkins by copying the initial admin password kept here: car /var/lib/jenkins/secrets/initialAdminPassword into the Unlock window that appears on launch
-10.  Install the requisite plugins
-11.  Set the username and password and Launch Jenkins
+2.  Import GPG key: `sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key`
+3.  Install Jenkins: `sudo yum install jenkins`
+4.  Reload the systemd manager: `sudo systemctl daemon-reload`
+5.  Start Jenkins server: `sudo systemctl start jenkins`
+6.  Verify Jenkins service is running: `sudo systemctl status jenkins`
+7.  Enable Jenkins to start at boot-up: `sudo systemctl enable jenkins`
+8.  Launch Jenkins: **http:jenkins-server-name:8080**
+9.  Unlock jenkins by copying the initial admin password kept here: `cat /var/lib/jenkins/secrets/initialAdminPassword` into the Unlock window that appears on launch
+10. Install the requisite plugins
+11. Set the username and password and Launch Jenkins
 ### Integrate JMeter with Jenkins
 1.	After you install and setup Jenkins server, install the 'Performance' plugin using Manage Jenkins - Plugins.
 2.	Create a job related to your script(s). 
