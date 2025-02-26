@@ -162,10 +162,10 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
       [Install]
       WantedBy=multi-user.target
    ```
- 6. sudo systemctl daemon-reload and then systemctl start logstashexport.service
- 7. Verify the service running by: systemctl status logstashexport.service and then curl http://localhost:9198/metrics
- 8. sudo systemctl enable logstashexport.service to enable the service on boot
- 9. Verify the metrics using http://<server-name>:9198/metrics from a local browser
+ 6. Reload daemon: `sudo systemctl daemon-reload` and then start the service: `systemctl start logstashexport.service`
+ 7. Verify the service running by: `systemctl status logstashexport.service` and then **curl http://localhost:9198/metrics**
+ 8. Enable the service on boot: `sudo systemctl enable logstashexport.service`
+ 9. Verify the metrics using **http://server-name:9198/metrics** from a local browser
  10. Restart prometheus to start reading the metrics
      ```
        sudo systemctl daemon-reload
@@ -179,9 +179,9 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
 	<img width="1702" alt="Logstash_Dashboard" src="https://github.com/user-attachments/assets/0f179d5a-fac1-485a-9d9e-ec931b5fb48d" />
  
 ## Monitoring Kafka with Prometheus
-1.  Download Prometheus JMX Exporter: wget https://repo.maven.apache.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.20.0/jmx_prometheus_javaagent-0.20.0.jar or any latest version
-2.  Move the exporter to kafka/libs: sudo mv jmx_prometheus_javaagent-0.20.0.jar  /opt/kafka/libs/
-3.  Configure Kafka to use the exporter by adding the below lines: vi /opt/kafka/bin/kafka-server-start.sh
+1.  Download Prometheus JMX Exporter: `wget https://repo.maven.apache.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.20.0/jmx_prometheus_javaagent-0.20.0.jar` or any latest version
+2.  Move the exporter to kafka/libs: `sudo mv jmx_prometheus_javaagent-0.20.0.jar  /opt/kafka/libs/`
+3.  Configure Kafka to use the exporter by adding the below lines: `vi /opt/kafka/bin/kafka-server-start.sh`
     >KAFKA_OPTS="-javaagent:/opt/kafka/libs/jmx_prometheus_javaagent-0.20.0.jar=9091:/etc/prometheus/prometheus.yml"
     >KAFKA_OPTS="-javaagent:/opt/kafka/libs/jmx_prometheus_javaagent-0.20.0.jar=9091:/opt/kafka/config/sample_jmx_exporter.yml"
 4.  Configure the JMX Exporter: Either use the below json by expanding details or use https://github.com/prometheus/jmx_exporter/blob/main/examples/kafka-2_0_0.yml
@@ -283,9 +283,9 @@ rules:
   labels:
     quantile: "0.$4"
   </details>
-5.  Edit the prometheus.yml to include Kafka data: vi /etc/prometheus/prometheus.yml
+5.  Edit the prometheus.yml to include Kafka data: `vi /etc/prometheus/prometheus.yml`
     <img width="804" alt="prometheus_kafka_yml" src="https://github.com/user-attachments/assets/3f42165a-6e51-465a-bd61-1657ecf4e84e" />
-6. Update Kafka systemd unit file: /etc/systemd/system/kafka.service
+6. Update Kafka systemd unit file: `vi /etc/systemd/system/kafka.service`
    ```
       [Service]
       Type=simple
@@ -299,10 +299,10 @@ rules:
       [Install]
       WantedBy=multi-user.target
    ```
-7.  Start zookeeper, if already not running, by: ./zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties from /opt/kafka/bin
-8.  Restart Kafka: sudo systemctl daemon-reload and sudo systemctl restart kafka
-9.  Restart Prometheus: sudo systemctl daemon-reload and then sudo systemctl restart prometheus
-10.  Verify kafka and prometheus status: sudo systemctl status prometheus and sudo systemctl status kafka
+7.  Start zookeeper, if already not running, by: `./zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties` from /opt/kafka/bin
+8.  Restart Kafka: `sudo systemctl daemon-reload` and start kafka service: `sudo systemctl restart kafka`
+9.  Restart Prometheus: `sudo systemctl daemon-reload` and then start prometheus service: `sudo systemctl restart prometheus`
+10. Verify kafka and prometheus status: `sudo systemctl status prometheus` and `sudo systemctl status kafka`
 ## Expose jmx metrics and monitor in jVisualVM or JConsole
 To monitor any java application, the JMX metrics need to be exposed. For example, in case of Kafka, do the following:
 1.  Modify the kafka-run-class.sh to have JMX_PORT="nnnn". Pass this JMX_PORT variable to KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false
