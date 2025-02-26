@@ -367,14 +367,18 @@ Make sure the latest open-jdk is installed on the jenkins server.
 6.	Now pass the parameters in your jmeter code. For JDBC Connection Configuration parameters, use the ${__P()} methods instead of regular parameters. Providing a jmx snippet below for better understanding:
 	<img width="452" alt="image" src="https://github.com/user-attachments/assets/dd007efd-1c24-42eb-9b78-5f83dcef324b" />
 ### What you get?
-1.	You may run the job with the parameters now supplied during run-time itself from Jenkins UI which is intuitive and any user may use it, without much scratching their heads
-   <img width="452" alt="image" src="https://github.com/user-attachments/assets/6384787b-98ab-4d5d-a90c-c44a1b3658bf" />
-2.	Check the Performance Report once the result is parsed and created by Performance Plugin. A sample result looks like this:
-   <img width="452" alt="image" src="https://github.com/user-attachments/assets/9ac64c5e-341f-4d76-b1d4-7c3d25e809fa" />
-3.	You also have the option to view Trend Results at one glance and therefore comparative analysis is already taken care of without using excels:
-   <img width="452" alt="image" src="https://github.com/user-attachments/assets/63c73838-d084-4cad-ab86-c0f0c762af2b" />
-4.	You can also filter the trend results according to your needs, for e.g. view the trend for the last n builds or of a particular build, without searching all over:
-   <img width="452" alt="image" src="https://github.com/user-attachments/assets/866f289b-6a67-4837-9d33-c9726bfaf843" />
+1. You may run the job with the parameters now supplied during run-time itself from Jenkins UI which is intuitive and any user may use it, without much scratching their heads
+
+     <img width="452" alt="image" src="https://github.com/user-attachments/assets/6384787b-98ab-4d5d-a90c-c44a1b3658bf" />
+2. Check the Performance Report once the result is parsed and created by Performance Plugin. A sample result looks like this:
+
+     <img width="452" alt="image" src="https://github.com/user-attachments/assets/9ac64c5e-341f-4d76-b1d4-7c3d25e809fa" />
+3. You also have the option to view Trend Results at one glance and therefore comparative analysis is already taken care of without using excels:
+
+     <img width="452" alt="image" src="https://github.com/user-attachments/assets/63c73838-d084-4cad-ab86-c0f0c762af2b" />
+4. You can also filter the trend results according to your needs, for e.g. view the trend for the last n builds or of a particular build, without searching all over:
+
+     <img width="452" alt="image" src="https://github.com/user-attachments/assets/866f289b-6a67-4837-9d33-c9726bfaf843" />
 
 
 
