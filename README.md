@@ -20,79 +20,8 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
 ## Install and Setup Prometheus
 1. Add system user group: `sudo groupadd --system prometheus` and `sudo useradd -s /sbin/nologin --system -g prometheus prometheus`
 2. Create directory for Prometheus: `sudo mkdir /var/lib/prometheus`
-3. Create configuration directories for Prometheus:
- ```
-   for i in rules rules.d files_sd; do
-   sudo mkdir -p /etc/prometheus/${i};
-   done
-```
-4. Go to the directory where you want Prometheus to reside: cd /opt and Download the latest version of Prometheus by running:  
-  ```
-  curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest \
-  | grep browser_download_url \
-  | grep linux-amd64 \
-  | cut -d '"' -f 4 \
-  | wget -qi -
-  ```
-5. Extract the file and place in the $PATH directory:
- ```
-   tar xvf prometheus-*.tar.gz
-   cd prometheus-*/
-   sudo cp prometheus promtool /usr/local/bin/
- ```
-6. If console and console_libraries are present, then copy them too: ```sudo cp -r prometheus.yml consoles/ console_libraries/ /etc/prometheus/```
-7. Create a systemd service file for Prometheus: `sudo vi /etc/systemd/system/prometheus.service` and add the below contents:
-   ```
-    [Unit]
-      Description=Prometheus
-      Documentation=https://prometheus.io/docs/introduction/overview/
-      Wants=network-online.target
-      After=network-online.target
-      
-      [Service]
-      Type=simple
-      User=prometheus
-      Group=prometheus
-      ExecReload=/bin/kill -HUP $MAINPID
-      ExecStart=/usr/local/bin/prometheus \
-        --config.file=/etc/prometheus/prometheus.yml \
-        --storage.tsdb.path=/var/lib/prometheus \
-        --web.console.templates=/etc/prometheus/consoles \
-        --web.console.libraries=/etc/prometheus/console_libraries \
-        --web.listen-address=0.0.0.0:9090 \
-        --web.external-url=
-      
-      SyslogIdentifier=prometheus
-      Restart=always
-      
-      [Install]
-      WantedBy=multi-user.target
-     ```
-8. Set correct directoy permissions:
-      ```
-         sudo chown -R prometheus:prometheus /etc/prometheus
-         sudo chmod -R 775 /etc/prometheus/
-         sudo chown -R prometheus:prometheus /var/lib/prometheus/
-      ```
-9. Reload the daemon:`sudo systemctl daemon-reload` and then start Prometheus service: `sudo systemctl start prometheus`
-10. Verify the service to be running: `systemctl status prometheus`
-11. Enable the service at start-up: `sudo systemctl enable prometheus`
-12. Disable firewalld as required. You may use selective:
-       ```
-         sudo firewall-cmd --permanent --add-rich-rule 'rule family="ipv4" \
-         source address="192.168.122.0/24" \
-         port protocol="tcp" port="9090" accept'
-         sudo firewall-cmd --reload
-       ```
-       OR allow all IPs
-    ```
-         sudo firewall-cmd --add-port=9090/tcp --permanent
-         sudo firewall-cmd --reload
-    ```
-13. Open Prometheus UI using a browser by launching: **http://server-ip:9090**
-    <img width="1723" alt="Prometheus_DefaultQueries" src="https://github.com/user-attachments/assets/8b538179-3b01-4d05-bf08-409d291db2db" />
-
-14. You may alternatively use this shell script to do the installation, change the version as required: https://github.com/nabanish/Performance/blob/main/InstallPrometheus.sh
+3. For further steps, please contact nabanishs@gmail.com or +91-9007084606
+4. You may alternatively use my shell script to do the installation.
 ## Install and Run Grafana
 1.  Add Grafana to yum repository:
        ```
@@ -108,15 +37,10 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
           sslcacert=/etc/pki/tls/certs/ca-bundle.crt
           EOF
        ```
-2.  Insall Grafana : `sudo dnf -y install grafana`
-3.  Verify package info: `rpm -qi grafana`
-4.  Start Grafana service: `sudo systemctl enable --now grafana-server.service`
-5.  Verify the Grafana service status: `systemctl status grafana-server.service`
-6.  Launch **http://server-ip:3000** to open Grafana UI
-7.  Default credentials are admin/admin. Change the password on first login
-8.  Add Data-source as the prometheus already setup by providing the prometheus details: **http://server-ip:9090** and provide a name
-9.  You may see the default metrics scraped by Prometheus for prometheus itself on the Metrics dashboard:
-     <img width="1723" alt="Grafana_Default_DashboardforPrometheus" src="https://github.com/user-attachments/assets/2d526502-1cd3-4211-9ffd-cb7133892584" />
+2.  For further steps, contact me on nabanishs@gmail.com or +91-9007084606
+3.  Add Data-source as the prometheus already setup by providing the prometheus details: **http://server-ip:9090** and provide a name
+4.  You may see the default metrics scraped by Prometheus for prometheus itself on the Metrics dashboard:
+     
 
 ## Monitoring Logstash with Prometheus-Grafana Stand-alone
 1. Download logstash jmx exporter from https://github.com/kuskoman/logstash-exporter/releases. Refer to https://github.com/kuskoman/logstash-exporter/blob/master/README.md for more details.
