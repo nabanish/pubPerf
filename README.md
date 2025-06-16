@@ -41,7 +41,11 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
 3.  Add Data-source as the prometheus already setup by providing the prometheus details: **http://server-ip:9090** and provide a name
 4.  You may see the default metrics scraped by Prometheus for prometheus itself on the Metrics dashboard:
      
-
+## Fully Automated Jenkins Job to deploy monitoring using Node-exporter-Prometheus-Grafana on multiple servers in the environment
+1. This utilizes a one-time setup of Ansible and the Jenkins server mentioned in this ReadMe.
+2. The ansible deploys the node-exporter, scrapping and the prometheus config update while Jenkins drives the automation using my self-written code with a single button-click.
+3. For further details, contact nabanishs@gmail.com or +91-9007084606
+   
 ## Monitoring Logstash with Prometheus-Grafana Stand-alone
 1. Download logstash jmx exporter from https://github.com/kuskoman/logstash-exporter/releases. Refer to https://github.com/kuskoman/logstash-exporter/blob/master/README.md for more details.
 2. For further steps, contact me on nabanishs@gmail.com or +91-9007084606
