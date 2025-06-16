@@ -66,6 +66,10 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
 To monitor any java application, the JMX metrics need to be exposed. For example, in case of Kafka, do the following:
 1.  Contact me on nabanishs@gmail.com or +91-9007084606
 
+## Monitoring Kafka-connect(source and sink connectors) with Prometheus
+1. Use the same JMX Exporter as in the case of Kafka monitoring.
+2. Place the exporter in `/opt/kafka/connect-distributed/` and .... Contact me on nabanishs@gmail.com or +91-9007084606 for further details.
+   
 ## Install UI for Apache Kafka containerized in podman and monitoring Kafka
 ### Install podman on your machine
 1.  `brew install podman` on Mac or RHEL: `dnf install container-tools` and then `dnf install container-tools`
