@@ -14,7 +14,7 @@ On the RHEL machine that you will use as JMeter server, go to any directory of y
   3. Rename the extracted folder: `cp -r apache-jmeter-5.6.3 jmeter` and then remove the original folder: `rm -rf apache-jmeter-5.6.3`
   4. Get into jmeter folder and remove unnecessary folders or documents: cd jmeter and then: `rm -rf printable_docs/ docs/`
   5. Get into lib folder: `cd lib/` and download the latest cmd runner from maven: `curl -O https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.3/cmdrunner-2.3.jar`
-  6. Get into ext foleer: `cd ext/` and download the latest jmeter plugin manager: `curl -O https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.9/jmeter-plugins-manager-1.9.jar`
+  6. Get into ext folder: `cd ext/` and download the latest jmeter plugin manager: `curl -O https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.9/jmeter-plugins-manager-1.9.jar`
   7. For further steps, contact nabanishs@gmail.com or +91-9007084606
   8. Verify the version of jmeter: `jmeter --version`. You may use my fully automated script to do the same.
 ## Install and Setup Prometheus
