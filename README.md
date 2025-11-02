@@ -2,7 +2,7 @@
 ## You need to have Java
   Firstly, on your RHEL machines, install java if not available already. Assuming you are root user:
   1. Update repo: `yum update`
-  2. Install JDK: `yum install java-21-openjdk` or `sudo dnf install java-21-amazon-corretto -y on Amazon Linux`
+  2. Install JDK: `yum install java-21-openjdk` or `sudo dnf install java-21-amazon-corretto -y` on Amazon Linux
   3. Verify java version : `java -version`
   4. If the java version is not what was installed, use: `sudo update-alternatives --config 'java'`
   5. Select the correct java version from the list
