@@ -924,5 +924,4 @@ AI Scaler V2 represents a **production-ready hybrid ML approach** to Kubernetes 
 
 **Document Version:** 1.0  
 **Last Updated:** 2024-11-12  
-**Author:** Nabanish (with Bob)  
-**License:** IBM Confidential
+**Author:** Nabanish (with Bob)
