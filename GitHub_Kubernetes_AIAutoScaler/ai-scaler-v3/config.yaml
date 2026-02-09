@@ -1,0 +1,65 @@
+# AI Scaler V3 Configuration
+# Multi-metric optimization with Prometheus integration
+
+# Prometheus connection
+prometheus:
+  url: "http://localhost:30090"
+  timeout: 30
+
+# Target deployment to autoscale
+target:
+  namespace: "default"
+  deployment: "tomcat-sample-app"
+
+# Scaling parameters
+scaling:
+  min_replicas: 1
+  max_replicas: 10
+  check_interval: 30  # seconds between scaling checks
+  cooldown_period: 60  # seconds to wait after scaling action
+
+# Metric weights for decision making
+# Total must equal 1.0
+weights:
+  cpu: 0.4      # 40% weight on CPU usage
+  memory: 0.3   # 30% weight on memory usage
+  network: 0.2  # 20% weight on network I/O
+  cost: 0.1     # 10% weight on cost optimization
+
+# Target thresholds (percentage)
+thresholds:
+  cpu_target: 70.0      # Target CPU usage
+  memory_target: 70.0   # Target memory usage
+  network_target: 70.0  # Target network usage
+
+# Dampening configuration
+dampening:
+  score_threshold: 15.0      # Minimum score difference to trigger scaling
+  large_difference: 2        # Number of replicas considered "large"
+  rapid_trend_threshold: 5.0 # Threshold for rapid trend detection
+  boundary_buffer: 0.1       # Buffer for min/max boundaries (10%)
+
+# Feature engineering
+features:
+  lookback_minutes: 15  # Historical data lookback period
+  aggregation_window: 5m  # Prometheus aggregation window
+
+# Cost optimization
+cost:
+  pod_cost_per_hour: 0.05  # Estimated cost per pod per hour
+  scale_down_preference: 0.7  # Preference for scaling down (0-1)
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "ai_scaler_v3.log"
+  max_history: 100  # Maximum number of metrics history entries to keep
+
+# Advanced settings
+advanced:
+  enable_predictive_scaling: false  # Enable ML-based prediction (future)
+  enable_cost_optimization: true    # Enable cost-aware scaling
+  enable_network_metrics: true      # Include network metrics in decisions
+  confidence_threshold: 0.5         # Minimum confidence for scaling actions
+
+# Made with Bob
