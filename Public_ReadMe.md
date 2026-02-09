@@ -173,5 +173,5 @@ Performance & Resilience Architect
 
 ---
 
-If you’re learning performance engineering — start here, break things safely, and then go deeper.
+If you’re learning performance engineering — start here, break things safely, and then go deeper. For implementation details refer: https://github.com/nabanish/pubPerf/blob/main/Beginner's_Guide.md
 
