@@ -360,7 +360,7 @@ This software is proprietary to IBM and is intended for internal use only. Unaut
 
 ## 👥 Authors
 
-- **Nabanish Bose** (nabanish.bose@ibm.com)
+- **Nabanish Sinha** (nabanishs@gmail.com)
 - **Bob** (AI Assistant)
 
 ---
@@ -398,4 +398,4 @@ This software is proprietary to IBM and is intended for internal use only. Unaut
 
 **Status**: Production Ready  
 **Last Updated**: 2026-02-09  
-**Maintained By**: IBM Guardium Team
+**Maintained By**: Nabanish Sinha
