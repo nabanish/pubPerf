@@ -576,6 +576,5 @@ Scaling Cost: Low (cost-aware optimization)
 ---
 
 **Document Version:** 1.0  
-**Last Updated:** 2024-11-12  
-**Author:** Nabanish (with Bob)  
-**License:** IBM Confidential
+**Last Updated:** 2025-11-12  
+**Author:** Nabanish (with Bob)
