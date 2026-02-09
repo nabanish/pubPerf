@@ -395,4 +395,4 @@ if __name__ == "__main__":
     scaler = AIAutoscaler()
     scaler.run()
 
-# Made by Nabanish with the help of Bob - V2 with fixed feedback loop
+# Made by Nabanish - V2 with fixed feedback loop
