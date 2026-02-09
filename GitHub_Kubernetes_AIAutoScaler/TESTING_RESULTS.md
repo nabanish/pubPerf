@@ -250,6 +250,4 @@ Time 6+:    5 pods, stable (dampening prevented 6th)
 
 ---
 
-**Made by Nabanish with the help of Bob**  
-**IBM Confidential - PID 5900-AST, 5900-BJ5, 5900-AQE, 5737-L66, 5737-L74**  
-**© Copyright IBM Corp. 2019, 2025**
+**Made by Nabanish with the help of Bob**
